@@ -6,7 +6,7 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000', 
+        target: 'https://mevn-taskmanager.onrender.com',  // URL de tu servidor en Render
         changeOrigin: true,
       },
     },
