@@ -2,11 +2,11 @@ const { defineConfig } = require('@vue/cli-service');
 
 module.exports = defineConfig({
   transpileDependencies: true,
-  publicPath: process.env.NODE_ENV === 'production' ? '/tu-subdirectorio/' : '/', // Cambia 'tu-subdirectorio' según sea necesario
+  publicPath: '/',
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000', // Cambia esto a tu API real
+        target: 'http://localhost:3000', 
         changeOrigin: true,
       },
     },
