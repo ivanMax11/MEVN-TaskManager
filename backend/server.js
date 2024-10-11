@@ -5,9 +5,8 @@ const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger-output.json');
 
-
 // Cargar variables de entorno
-require('dotenv').config();
+dotenv.config();
 
 // Conectar a la base de datos MongoDB
 mongoose.connect(process.env.MONGO_URI)
@@ -17,16 +16,15 @@ mongoose.connect(process.env.MONGO_URI)
 // Crear aplicación de Express
 const app = express();
 
+// Configuración de CORS
 const corsOptions = {
     origin: ['https://mevn-taskmanager-1.onrender.com', 'http://localhost:8080'],  // Agrega localhost para desarrollo
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
+    credentials: true,  // Permite enviar cookies y credenciales
 };
 app.use(cors(corsOptions));
 
-  
-
-
+// Middleware para parsear JSON
 app.use(express.json());
 
 // Rutas

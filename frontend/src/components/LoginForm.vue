@@ -35,6 +35,7 @@ export default {
                         email: this.email,
                         password: this.password,
                     }),
+                    credentials: 'include',
                 });
 
                 if (!response.ok) {
