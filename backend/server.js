@@ -17,8 +17,16 @@ mongoose.connect(process.env.MONGO_URI)
 // Crear aplicación de Express
 const app = express();
 
-// Middleware
-app.use(cors({ origin: '*' }));
+const corsOptions = {
+    origin: ['https://mevn-taskmanager-1.onrender.com', 'http://localhost:8080'],  // Agrega localhost para desarrollo
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+};
+app.use(cors(corsOptions));
+
+  
+
+
 app.use(express.json());
 
 // Rutas

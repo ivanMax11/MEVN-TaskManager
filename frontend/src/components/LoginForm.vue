@@ -25,48 +25,47 @@ export default {
     methods: {
         ...mapActions(['login']), // Mapea la acción de login desde Vuex
         async loginForm() {
-    try {
-        const response = await fetch('http://localhost:3000/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: this.email,
-                password: this.password,
-            }),
-        });
+            try {
+                const response = await fetch(`${process.env.VUE_APP_API_URL}/api/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: this.email,
+                        password: this.password,
+                    }),
+                });
 
-        if (!response.ok) {
-            if (response.status === 401) {
-                this.errorMessage = 'Invalid email or password.';
-            } else {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        this.errorMessage = 'Invalid email or password.';
+                    } else {
+                        this.errorMessage = 'Login failed. Please try again.';
+                    }
+                    return; // Evita continuar si hay un error
+                }
+
+                const userData = await response.json();
+                if (userData.token && userData.user) {
+                    this.login(userData); // Llama a la acción de Vuex
+                    localStorage.setItem('token', userData.token);
+                    localStorage.setItem('user', JSON.stringify(userData.user)); // Guarda el objeto usuario
+
+                    this.email = '';
+                    this.password = ''; // Limpiar el formulario
+                    this.$router.push('/dashboard'); // Redirige al dashboard después de logearse
+                } else {
+                    this.errorMessage = 'Invalid login response';
+                }
+            } catch (error) {
                 this.errorMessage = 'Login failed. Please try again.';
             }
-            return; // Evita continuar si hay un error
-        }
-
-        const userData = await response.json();
-        if (userData.token && userData.user) {
-            this.login(userData); // Llama a la acción de Vuex
-            localStorage.setItem('token', userData.token);
-            localStorage.setItem('user', JSON.stringify(userData.user)); // Guarda el objeto usuario
-
-            this.email = '';
-            this.password = ''; // Limpiar el formulario
-            this.$router.push('/dashboard'); // Redirige al dashboard después de logearse
-        } else {
-            this.errorMessage = 'Invalid login response';
-        }
-    } catch (error) {
-        this.errorMessage = 'Login failed. Please try again.';
-    }
-}
-
-
+        },
     },
 };
 </script>
+
 
 
 
